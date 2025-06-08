@@ -36,3 +36,73 @@ function doOperations(a,b,op) {
 }
 
 console.log(doOperations(2,3,sum))
+
+
+Asynchronous Function code. 
+const fs = require("fs") 
+
+function print(err, data) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log(data);
+  }
+}
+
+fs.readFile("a.txt", "utf-8", print);
+fs.readFile("b.txt", "utf-8", print);
+
+console.log("Done!")
+
+
+
+setTimeout to understand callback
+
+console.log("Hi")
+
+function timeout() {
+  console.log("Click the button");
+}
+
+setTimeout(timeout, 5000);
+
+console.log("Welcome to loupe!");
+
+
+// Thought experiment. (Below, "My name is Siddhesh Daphane" will print at last because thread is busy in for loop. )
+
+console.log("Hello World");
+
+function callback() {
+  console.log("My name is Siddhesh Daphane")
+}
+
+setTimeout(callback, 1000);
+
+console.log("I am learning Javascript")
+
+let c = 0;
+for (let i; i < 100000000; i++) {
+  c =+ 1;
+}
+
+console.log("Expersnive operation done!");
+
+
+/// Another thought experiement
+
+console.log("Hi");
+
+
+function callback() {
+  console.log("My name is Siddhesh Daphane")
+}
+
+setTimeout(callback, 4000);
+
+let c = 0;
+for (let i=0; i < 8; i++) {
+  c++
+}
+
+console.log(c);
