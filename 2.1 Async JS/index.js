@@ -38,7 +38,7 @@ function doOperations(a,b,op) {
 console.log(doOperations(2,3,sum))
 
 
-Asynchronous Function code. 
+// Asynchronous Function code. 
 const fs = require("fs") 
 
 function print(err, data) {
@@ -56,7 +56,7 @@ console.log("Done!")
 
 
 
-setTimeout to understand callback
+// setTimeout to understand callback
 
 console.log("Hi")
 
