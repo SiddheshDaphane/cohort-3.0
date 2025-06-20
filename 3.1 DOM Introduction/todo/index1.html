@@ -1,0 +1,29 @@
+<html>
+
+  <body>
+    <h1>todo list</h1>
+    <input type="text"></input>
+    <button onclick="addTo()">add to a list</button>
+
+    <script>
+      counter = 1
+      function addTo() {
+        const val = document.querySelector("input");
+        const innerVal = val.value;
+        console.log(innerVal);
+
+        const newDiv = document.createElement("div");
+        newDiv.setAttribute("id",counter);
+        newDiv.innerHTML = `<div> ${innerVal} </div> <button onclick= "deleteT(${counter})">delete</button>`
+        const parentEl = document.querySelector("body");
+        parentEl.appendChild(newDiv);
+        counter += 1;
+      }
+
+      function deleteT(index) {
+        const element = document.getElementById(index)
+        element.parentNode.removeChild(element);
+      }
+    </script>
+  </body>
+</html>

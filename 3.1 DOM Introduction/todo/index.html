@@ -1,0 +1,73 @@
+<!-- <html>
+
+  <body>
+    <h1>To do list</h1>
+    <input type="text"></input>
+    <button onclick="addTask()">add to the list</button>
+
+
+    <script>
+      counter = 1
+      function deleteTodo(index) {
+        const parent = document.getElementById(index);
+        const child = parent.firstElementChild;
+        parent.removeChild(child);
+      }
+
+      function addTask() {
+        const inputEl = document.querySelector("input");
+        const innerValue = inputEl.value
+        // console.log(innerValue);
+
+        const newEl = document.createElement("div");
+        newEl.setAttribute("id",counter);
+        newEl.innerHTML = `<div> ${innerValue} <button onclick="deleteTodo(${counter})">delete</button> </div>`;
+        const parentEl = document.querySelector("body");
+        parentEl.appendChild(newEl);
+        counter += 1;
+      }
+
+ 
+      // console.log(innerValue);
+
+    </script>
+  </body>
+</html> -->
+
+
+
+<html>
+
+  <body>
+    <h1>To do list</h1>
+    <input type="text"></input>
+    <button onclick="addTask()">add to the list</button>
+
+
+    <script>
+      counter = 1
+      function deleteTodo(index) {
+        const element = document.getElementById(index);
+        // const child = parent.firstElementChild;
+        element.parentNode.removeChild(element);
+      }
+
+      function addTask() {
+        const inputEl = document.querySelector("input");
+        const innerValue = inputEl.value
+        // console.log(innerValue);
+
+        const newEl = document.createElement("div");
+        newEl.setAttribute("id",counter);
+        newEl.innerHTML = `<div> ${innerValue} <button onclick="deleteTodo(${counter})">delete</button> </div>`;
+        const parentEl = document.querySelector("body");
+        parentEl.appendChild(newEl);
+        counter += 1;
+      }
+
+ 
+      // console.log(innerValue);
+
+    </script>
+  </body>
+</html>
