@@ -1,0 +1,38 @@
+<html>
+
+<body>
+  <input type="text"></input>
+  <button onclick="addToList()">Add to a list</button>
+  <script>
+    counter = 1
+    function addToList() {
+      const inputEl = document.querySelector("input");
+      const valEl = inputEl.value; 
+      // console.log(valEl);
+
+      const newDiv = document.createElement("div");
+      newDiv.setAttribute("id", counter)
+      counter += 1;
+
+      const spanEl = document.createElement("span");
+      spanEl.setAttribute("id", counter)
+      counter += 1;
+      spanEl.innerHTML = valEl;
+      newDiv.appendChild(spanEl);
+
+      const buttonEl = document.createElement("button");
+      buttonEl.setAttribute("id", counter)
+      counter += 1;
+      buttonEl.innerHTML = "delete";
+      newDiv.appendChild(buttonEl);
+
+      buttonEl.onclick = function() {
+        const parentDiv = this.parentNode;
+        parentDiv.remove()
+      }
+
+      document.querySelector("body").appendChild(newDiv);
+    }
+  </script>
+</body>
+</html>
