@@ -27,11 +27,19 @@
       render();
     }
 
-    function createTodoComponent(todo) {
+    function deleteTodoAtIndex(index) {
+      todos.splice(index,1);
+      render()
+    }
+
+    function createTodoComponent(todo, index) {
       const div = document.createElement("div");
       const h1 = document.createElement("h1");
       const button = document.createElement("button");
       button.innerHTML = "Delete";
+      button.onclick = function() {
+        deleteTodoAtIndex(index);
+      }
       h1.innerHTML = todo.title;
       div.append(h1);
       div.append(button);
@@ -42,10 +50,71 @@
       document.querySelector("#todos").innerHTML = "";
       for (let i=0; i < todos.length; i++) {
         const todo = todos[i];
-        const element = createTodoComponent(todo);
+        const element = createTodoComponent(todo,i);
+        console.log(element);
         document.querySelector("#todos").appendChild(element);
       }
+
+      /*
+===========================================================
+🧠 HOW DELETE FUNCTION WORKS IN THIS TODO APP (EXPLAINED)
+===========================================================
+
+🔁 1. The `todos` array stores all the user's tasks as objects:
+    Example:
+    [
+      { title: "First Task" },
+      { title: "Second Task" },
+      { title: "Third Task" }
+    ]
+
+🧱 2. The `render()` function loops through this array to display
+    each todo on the screen using a helper function:
+    
+    for (let i = 0; i < todos.length; i++) {
+        const todo = todos[i];
+        const element = createTodoComponent(todo, i); // <- passing index
+        document.querySelector("#todos").appendChild(element);
+    }
+
+📦 3. The `createTodoComponent(todo, index)` function creates
+    the visual structure (component) for each todo and sets
+    the `onclick` of the delete button to:
+    
+    button.onclick = function() {
+        deleteTodoAtIndex(index);
+    }
+
+📍 4. The `index` is passed in as an argument when the button is created.
+    So each button "remembers" which todo it is linked to.
+
+🧹 5. When a delete button is clicked, `deleteTodoAtIndex(index)` is called.
+    Example: if the user clicks the button for the second task,
+    index = 1, and the call becomes:
+
+    deleteTodoAtIndex(1);
+
+🗑 6. The `deleteTodoAtIndex` function removes that item from the array:
+    
+    function deleteTodoAtIndex(index) {
+        todos.splice(index, 1);  // removes 1 item at position `index`
+        render();                // re-renders the updated UI
+    }
+
+🔄 7. After deletion, `render()` is called again to clear the screen
+    and rebuild the UI based on the new `todos` array.
+
+✅ 8. Result: The UI updates and the correct item disappears from the DOM.
+
+🎁 BONUS: JavaScript closures ensure that each button "remembers" the
+    correct `index` it was created with, even if the DOM is rebuilt.
+
+===========================================================
+*/
+
     }
   </script>
 </body>
 </html>
+
+
