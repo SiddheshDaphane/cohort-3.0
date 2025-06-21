@@ -112,6 +112,60 @@
 ===========================================================
 */
 
+/*
+====================================================================
+🧠 HOW COMPONENT & STATE WORK IN THIS TODO APP (EXPLAINED)
+====================================================================
+
+🧱 1. The application is built using the concept of:
+      → "State" (array that holds data)
+      → "Component" (function that creates a UI block for each todo)
+      → "Render function" (prints the UI based on current state)
+
+💾 2. STATE (todos array):
+      - We use a variable `todos = []` to store all user input.
+      - Each item the user enters is stored as an object:
+        Example:
+        todos.push({ title: "Go to gym" });
+
+📥 3. INPUT + ADD:
+      - The user types something in the `<input>` box.
+      - On clicking "Add Todo", `addTodo()` is called.
+      - It reads the value from input and pushes it into the `todos` array.
+      - Then it calls `render()` to update the screen.
+
+🔁 4. RENDER FUNCTION (UI = f(state)):
+      - `render()` is responsible for:
+        - Clearing the old UI using: `#todos.innerHTML = ""`
+        - Looping through the `todos` array
+        - For each todo, it creates a component using:
+              createTodoComponent(todo, index)
+        - Then appends that component to the DOM.
+
+🧩 5. COMPONENT FUNCTION (Reusable UI block):
+      - `createTodoComponent(todo, index)` creates the structure for 1 todo:
+          - Creates a `div` container
+          - Adds an `h1` to display the todo title
+          - Adds a `button` to delete that todo
+      - This function returns the complete DOM structure for 1 todo item.
+
+🧼 6. WHY WE CLEAR `.innerHTML` EACH TIME:
+      - Without clearing, the DOM will keep appending the same elements again.
+      - To avoid duplication, we clear the UI before rendering the new state.
+
+🧠 7. STATE-DRIVEN VIEW:
+      - The view is always a reflection of the `todos` array.
+      - If the state changes (add/delete), the view updates via `render()`.
+
+🎁 EXTRA:
+      - This structure mimics modern frontend frameworks like React:
+          UI = f(state)
+      - You’re manually handling state + rendering without using a library.
+
+====================================================================
+*/
+
+
     }
   </script>
 </body>
