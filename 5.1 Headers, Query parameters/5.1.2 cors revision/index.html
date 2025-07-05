@@ -14,14 +14,14 @@
   <script>
     async function getSum() {
       try {
-        const a = document.querySelector("#a").value;
-        const b = document.querySelector("#b").value;
+        const first_value = document.querySelector("#a").value;
+        const second_value = document.querySelector("#b").value;
         const response = await fetch("http://localhost:3000/sum", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ a : a, b: b })
+        body: JSON.stringify({ a : first_value, b: second_value })
       })
 
       const data = await response.json();
