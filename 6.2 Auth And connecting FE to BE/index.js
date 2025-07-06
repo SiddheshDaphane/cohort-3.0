@@ -1,8 +1,18 @@
+const { application } = require("express");
 const express = require("express");
 const jwt = require("jsonwebtoken");
-const JWT_SECRET = "siddhesh123"
+const JWT_SECRET = "siddhesh123";
+const cors = require("cors");
+
+
+
 const app = express();
 app.use(express.json());
+app.use(cors({
+  origin: "*", // or restrict to your frontend domain
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
 let users = []
 
@@ -22,6 +32,10 @@ function auth(req, res, next) {
 
 }
 
+
+app.get("/", function(req, res) {
+  res.sendFile(__dirname + "/public/index.html")
+})
 
 
 app.post("/signup", function(req, res) {
@@ -76,17 +90,18 @@ app.post("/signin", function(req, res) {
 
 app.get("/me",auth, function(req, res) {
 
+  let currentUser = req.username;
   let foundUser = null;
-
   for (let i=0; i < users.length; i++){
-    if(users[i].username === req.username){
+    if(users[i].username === currentUser){
       foundUser = users[i];
     }
   }
 
   if(foundUser){
     res.json({
-      username: req.username
+      username: foundUser.username,
+      password: foundUser.password,
     })
   } else {
     res.json({
