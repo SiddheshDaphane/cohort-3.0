@@ -1,10 +1,14 @@
+require("dotenv").config(); // Load env variables from .env
+
 const express = require("express");
 const { default: mongoose } = require("mongoose");
 const { UserModel, TodoModel } = require("./db");
 const jwt = require("jsonwebtoken");
-const JWT_SECRET = "siddhesh123";
+const JWT_SECRET = process.env.JWT_SECRET;
+require("dotenv").config(); // Load env variables from .env
 
-mongoose.connect("mongodb+srv://Siddhesh:Wasadikar@cluster0.5cgwjmn.mongodb.net/cohort_todo");
+
+mongoose.connect(process.env.MONGODB_URL);
 
 const app = express();
 app.use(express.json());
