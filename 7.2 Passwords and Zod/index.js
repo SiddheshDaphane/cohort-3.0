@@ -25,7 +25,8 @@ app.post("/signup", async function(req, res) {
 
   if(!parsedDataWithSuccess.success){
     res.json({
-      messgae: "Incorrect format"
+      messgae: "Incorrect format",
+      error: parsedDataWithSuccess.error.format()
     })
     return
   }
