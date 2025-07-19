@@ -14,20 +14,26 @@ app.use(express.json());
 
 
 app.post("/signup", async function(req, res) {
-  const email = req.body.email;
-  const name = req.body.name;
-  const password = req.body.password
+  try {
+    const email = req.body.email;
+    const name = req.body.name;
+    const password = req.body.password
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  await UserModel.create({
-    email: email,
-    name: name,
-    password: hashedPassword
-  });
-  res.json({
-    messgae: "You are signed up!"
-  })
+    await UserModel.create({
+      email: email,
+      name: name,
+      password: hashedPassword
+    });
+    res.json({
+      messgae: "You are signed up!"
+    })
+  } catch(e) {
+    res.status(500).json({
+      messgae: "Error while signing up"
+    })
+  }
 });
 
 app.post("/signin", async function(req, res) {
@@ -35,7 +41,7 @@ app.post("/signin", async function(req, res) {
   const password = req.body.password;
 
   const response = await UserModel.findOne({
-    email: email,
+      email: email,
   });
 
   const passwordMatch = bcrypt.compare(password, response.password)
