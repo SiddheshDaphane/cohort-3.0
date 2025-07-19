@@ -2,6 +2,7 @@ require("dotenv").config(); // Load env variables from .env
 const express = require("express");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const { z } = require("zod");
 const { UserModel, TodoModel } = require("./db")
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = process.env.JWT_SECRET; 
@@ -14,6 +15,21 @@ app.use(express.json());
 
 
 app.post("/signup", async function(req, res) {
+  const requireBody = z.object({
+    email: z.string().min(3).max(100).email(),
+    name: z.string().min(3).max(100),
+    password: z.string().min(3).max(100)
+  })
+
+  const parsedDataWithSuccess = requireBody.safeParse(req.body);
+
+  if(!parsedDataWithSuccess.success){
+    res.json({
+      messgae: "Incorrect format"
+    })
+    return
+  }
+
   try {
     const email = req.body.email;
     const name = req.body.name;
