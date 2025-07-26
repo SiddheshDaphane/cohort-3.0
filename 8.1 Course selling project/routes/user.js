@@ -1,7 +1,9 @@
 const { Router } = require("express");
 const { userModel } = require("../db");
-const { z } = require("zod");
+const { z, preprocess } = require("zod");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const JWT_SECRET_USER = process.env.JWT_SECRET_USER;
 
 
 const userRouter = Router();
@@ -136,11 +138,18 @@ userRouter.post("/signin", async function(req,res) {
     }
 
 
-    return res.status(200).json({
+    if(passwordMatch) {
+      const token = jwt.sign({
+        id: response._id
+      }, JWT_SECRET_USER)
+
+     res.status(200).json({
       success: true,
       messgae: "Signin endpoint",
-      userId: response._id
-    })
+      token: token
+      })
+    }
+
   } catch(err) {
     return res.status(500).json({
       success: false,

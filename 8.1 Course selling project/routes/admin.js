@@ -2,6 +2,8 @@ const { Router } = require("express");
 const { adminModel } = require("../db");
 const { z } = require("zod");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const JWT_SECRET_ADMIN = process.env.JWT_SECRET_ADMIN;
 
 const adminRouter = Router();
 
@@ -63,7 +65,7 @@ adminRouter.post("/signup", async function(req,res) {
       firstName: firstName,
       lastName: lastName
     });
-    
+
     return res.status(201).json({
       success: true,
       messgae: "Congrats! You are singed up.",
@@ -136,12 +138,19 @@ adminRouter.post("/signin", async function(req,res) {
       })
     }
 
+    if(passwordMatch) {
+      const token = jwt.sign({
+        id: response._id
+      }, JWT_SECRET_ADMIN)
 
-    return res.status(200).json({
+     res.status(200).json({
       success: true,
       messgae: "Signin endpoint",
-      userId: response._id
+      token: token
     })
+    }
+
+
   } catch(err) {
     return res.status(500).json({
       success: false,
