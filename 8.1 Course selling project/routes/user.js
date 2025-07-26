@@ -1,9 +1,10 @@
 const { Router } = require("express");
 const { userModel } = require("../db");
-const { z, preprocess } = require("zod");
+const { z } = require("zod");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const JWT_SECRET_USER = process.env.JWT_SECRET_USER;
+const { userMiddleware } = require("../middleware/user");
 
 
 const userRouter = Router();
@@ -163,7 +164,7 @@ userRouter.post("/signin", async function(req,res) {
 });
 
 
-userRouter.get("/purchases", function(req,res) {
+userRouter.get("/purchases", userMiddleware, function(req,res) {
   res.json({
     messgae: "user purchase endpoint"
   })

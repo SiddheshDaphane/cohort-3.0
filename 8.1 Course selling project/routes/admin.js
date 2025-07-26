@@ -4,6 +4,7 @@ const { z } = require("zod");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const JWT_SECRET_ADMIN = process.env.JWT_SECRET_ADMIN;
+const { adminMiddleware } = require("../middleware/admin");
 
 const adminRouter = Router();
 
@@ -166,7 +167,7 @@ adminRouter.post("/signin", async function(req,res) {
 
 
 
-adminRouter.post("/", function(req,res) {
+adminRouter.post("/", adminMiddleware, function(req,res) {
   res.json({
     messgae: "Signin endpoint"
   })
