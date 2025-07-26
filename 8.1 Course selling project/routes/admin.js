@@ -35,6 +35,7 @@ adminRouter.post("/signup", async function(req,res) {
       });
     }
 
+
     const { email, password, firstName, lastName } = req.body
 
     const hashedPassword = await bcrypt.hash(password,10);
@@ -62,6 +63,7 @@ adminRouter.post("/signup", async function(req,res) {
       firstName: firstName,
       lastName: lastName
     });
+    
     return res.status(201).json({
       success: true,
       messgae: "Congrats! You are singed up.",
@@ -80,6 +82,8 @@ adminRouter.post("/signup", async function(req,res) {
 });
 
 
+
+
 adminRouter.post("/signin", async function(req,res) {
 
   const requireBody = z.object({
@@ -93,6 +97,7 @@ adminRouter.post("/signin", async function(req,res) {
       )
   })
 
+
   try {
     const parsedData = requireBody.safeParse(req.body);
 
@@ -103,6 +108,7 @@ adminRouter.post("/signin", async function(req,res) {
         error: parsedData.error.format()
       })
     }
+
 
     const { email, password } = req.body;
 
@@ -119,6 +125,7 @@ adminRouter.post("/signin", async function(req,res) {
       })
     }
 
+
     const passwordMatch = await bcrypt.compare(password, response.password)
 
     if(!passwordMatch) {
@@ -128,6 +135,7 @@ adminRouter.post("/signin", async function(req,res) {
         error: { type: "AuthError", details: "Password not found"}
       })
     }
+
 
     return res.status(200).json({
       success: true,
@@ -147,11 +155,16 @@ adminRouter.post("/signin", async function(req,res) {
 });
 
 
+
+
 adminRouter.post("/", function(req,res) {
   res.json({
     messgae: "Signin endpoint"
   })
 });
+
+
+
 
 adminRouter.put("/course", function(req,res) {
   res.json({
@@ -159,11 +172,17 @@ adminRouter.put("/course", function(req,res) {
   })
 });
 
+
+
+
 adminRouter.get("/course/bulk", function(req,res) {
   res.json({
     messgae: "Signin endpoint"
   })
 });
+
+
+
 
 
 module.exports = {
