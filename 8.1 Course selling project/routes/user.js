@@ -1,10 +1,11 @@
 const { Router } = require("express");
-const { userModel } = require("../db");
+const { userModel, courseModel, purchaseModel } = require("../db");
 const { z } = require("zod");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const JWT_SECRET_USER = process.env.JWT_SECRET_USER;
 const { userMiddleware } = require("../middleware/user");
+const course = require("./course");
 
 
 const userRouter = Router();
@@ -164,10 +165,44 @@ userRouter.post("/signin", async function(req,res) {
 });
 
 
-userRouter.get("/purchases", userMiddleware, function(req,res) {
-  res.json({
-    messgae: "user purchase endpoint"
-  })
+userRouter.get("/purchases", userMiddleware, async function(req,res) {
+  const userId = req.userId
+
+  try {
+    const response = await purchaseModel.find({
+      userId
+    });
+
+    console.log(response);
+
+    if(!response) {
+      return res.status(400).json({
+        messgae: "There are no purchased courses"
+      });
+    }
+
+    let purchasesCourses = [];
+
+    for(let i=0; i < response.length; i++){
+      purchasesCourses.push(response[i].courseId);
+    }
+
+    const courses = await courseModel.find({
+      _id: { $in: purchasesCourses }
+    })
+
+    return res.status(200).json({
+      success: true,
+      message: "Here are your courses",
+      courses: courses
+    })
+  } catch(err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      errors: err.message
+    })
+  }
 });
 
 
