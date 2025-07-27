@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { adminModel } = require("../db");
+const { adminModel, courseModel } = require("../db");
 const { z } = require("zod");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -167,10 +167,74 @@ adminRouter.post("/signin", async function(req,res) {
 
 
 
-adminRouter.post("/", adminMiddleware, function(req,res) {
-  res.json({
-    messgae: "Signin endpoint"
+adminRouter.post("/course", adminMiddleware, async function(req,res) {
+  const adminId = req.adminId.toString();
+  console.log(adminId);
+
+  const requireBody = z.object({
+    title: z.string(),
+    description: z.string(),
+    imageURL: z.string(),
+    price: z.number(0, "price must be non-negative number"),
   })
+
+  try {
+    const parsedData = requireBody.safeParse(req.body);
+
+
+    if(!parsedData.success){
+      return res.status(400).json({
+        success: false,
+        message: "Validation error",
+        detail: {
+          type: "Validation error", error: "Please put correct format in input fields."
+        },
+        errors: parsedData.error.format()
+      });
+    }
+
+    const { title, description, imageURL, price } = parsedData.data
+
+    const alreadyExists = await courseModel.findOne({
+      title,
+      description,
+      imageURL,
+      price,
+      creatorId: adminId
+    })
+
+    if(alreadyExists){
+      return res.status(409).json({
+        success: false,
+        message: `This course for ${adminId} already exists and id is ${alreadyExists._id}`
+      })
+    }
+    
+    const course = await courseModel.create({
+      title,
+      description,
+      imageURL,
+      price,
+      creatorId: adminId
+    })
+
+    if(course){
+      return res.status(200).json({
+        success: true,
+        messgae: `New course of ${adminId} has been created and it's id is ${course._id}`
+      })
+    }
+
+
+
+  } catch(err) {
+    return res.status(500).json({
+      success: false,
+      message: "failed to create course",
+      error: err.message
+    })
+  }
+
 });
 
 
