@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const { adminModel, courseModel } = require("../db");
 const { z } = require("zod");
+const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const JWT_SECRET_ADMIN = process.env.JWT_SECRET_ADMIN;
@@ -240,10 +241,75 @@ adminRouter.post("/course", adminMiddleware, async function(req,res) {
 
 
 
-adminRouter.put("/course", function(req,res) {
-  res.json({
-    messgae: "Signin endpoint"
+adminRouter.put("/course", adminMiddleware, async function(req,res) {
+  const adminId = req.adminId
+  // console.log(adminId);
+
+  const requireBody = z.object({
+    title: z.string(),
+    description: z.string(),
+    price: z.number(0, "price must be non-negative number"),
+    imageURL: z.string(),
+    courseId: z.string()
   })
+
+  try {
+    const parsedData = requireBody.safeParse(req.body);
+
+    if(!parsedData.success){
+      return res.status(400).json({
+        success: false,
+        messgae: "Validation error",
+        detail: {
+          type: "Validation error",
+          error: "Please put correct format in input fields"
+        },
+        errors: parsedData.error.format()
+      })
+    }
+
+    const { title, description, price, imageURL, courseId } = parsedData.data
+
+    const course = await courseModel.findOne({
+      creatorId: adminId,
+      _id: courseId
+    });
+
+    if(!course) {
+      return res.status(400).json({
+        success: false,
+        message: `Course with ${courseId} for admin ${adminId} not found.`
+      });
+    }
+
+    const updatedCourse = await courseModel.findOneAndUpdate({
+      _id: courseId,
+      creatorId: adminId
+    },
+    {
+      title,
+      description,
+      price,
+      imageURL
+    },
+    {
+      new: true
+    });
+
+    return res.status(200).json({
+      success: true,
+      messgae: "course updated successfully",
+      updatedCourse
+    })
+
+
+  } catch(err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: err.message
+    })
+  }
 });
 
 
