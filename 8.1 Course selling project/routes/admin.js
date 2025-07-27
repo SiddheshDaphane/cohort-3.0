@@ -315,10 +315,32 @@ adminRouter.put("/course", adminMiddleware, async function(req,res) {
 
 
 
-adminRouter.get("/course/bulk", function(req,res) {
-  res.json({
-    messgae: "Signin endpoint"
-  })
+adminRouter.get("/course/bulk", adminMiddleware, async function(req,res) {
+  const adminId = req.adminId
+
+  try {
+    const response = await courseModel.find({
+      creatorId: adminId
+    })
+
+    if(!response) {
+      return res.status(400).json({
+        message: "No courses found created by you. Please create a course"
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      messgae: "Here are all your courses",
+      courses: response
+    });
+  } catch(err){
+    return res.status(500).json({
+      success: false,
+      messgae: "Internal Server Error",
+      errors: err.message
+    })
+  }
 });
 
 
