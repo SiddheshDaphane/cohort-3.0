@@ -1,35 +1,46 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+   <div style={{ backgroundColor: "#dfe6e9", height: "100vh"}}>
+    <div style={{ display: "flex", justifyContent: "center" }}>
+      <PostComponent />
+    </div>
+    <br />
+    <div style={{ display: "flex", justifyContent: "center" }}>
+      <PostComponent />
+    </div>
+    <br />
+    <div style={{ display: "flex", justifyContent: "center" }}>
+      <PostComponent />
+    </div>
+    
+   </div>
   )
+}
+
+function PostComponent() {
+  return <div style={{width: 300, backgroundColor: "white", borderRadius: 10, borderColor: "gray"}}>
+    <div style={{width: 300, backgroundColor: "white", borderRadius: 10, borderColor: "gray", display: "flex"}}>
+    <img src={"https://media.licdn.com/dms/image/v2/D5603AQEEuKfIIe3L5w/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1705523004959?e=1757548800&v=beta&t=NpYr9kCbH364WsAJ6OQ8pZhmfxWlvbAwYcDUDQHCIAg"} style={{
+      height: 20,
+      widows: 20,
+      borderRadius: 20,
+      padding: 10
+    }}>
+    </img>
+      <div style={{marginLeft: 10, fontSize: 15, padding: 10}}>
+        <b>
+          Siddhesh Ravindra Daphane
+        </b>
+          <div>20000</div>
+          <div>12m</div>
+        </div>
+    </div>
+    <div style={{ marginLeft: 10, paddingBottom: 10 }}>
+      This is Siddhesh Daphane learning react.
+    </div>
+</div>
 }
 
 export default App
