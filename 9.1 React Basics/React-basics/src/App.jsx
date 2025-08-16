@@ -1,29 +1,40 @@
+import { useState } from "react"
 
 function App() {
 
+  const [posts, setPosts] = useState([]);
+
+  const PostComponents = posts.map(post => <PostComponent 
+    name={post.name}
+    subtitle={post.subtitle}
+    time={post.time}
+    image={post.image}
+    description={post.description}
+  />)
+
+
+  function addPost() {
+    setPosts([...posts, {
+      name: "Siddhesh Daphane",
+      subtitle: "1000 followers",
+      time: "15m ago",
+      description: "Siddhesh is learning react",
+      image: "https://media.licdn.com/dms/image/v2/D5603AQEEuKfIIe3L5w/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1705523004959?e=1758153600&v=beta&t=rkRimPr6FE_Tmv0ZKxKtAZjSZggtViR8EVV3fvO646U"
+    }])
+  }
+
   return (
    <div style={{ backgroundColor: "#dfe6e9", height: "100vh"}}>
-    <div style={{ display: "flex", justifyContent: "center" }}>
-      <PostComponent 
-        name = "Siddhesh Ravindra Daphane" 
-        subtitle="20000 followers"
-        time= "12m ago"
-        description="This is Siddhesh Daphane learning about react from basics"
-        image="https://media.licdn.com/dms/image/v2/D5603AQEEuKfIIe3L5w/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1705523004959?e=1757548800&v=beta&t=NpYr9kCbH364WsAJ6OQ8pZhmfxWlvbAwYcDUDQHCIAg"  
-      />
-    </div>
-    <br />
-    <div style={{ display: "flex", justifyContent: "center" }}>
-      <PostComponent 
-        name = "Elon Musk" 
-        subtitle="Promoted"
-        description="Tesla is the biggest AI project on planet earth."
-        image="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcR6bAaKXafqo8j-faUhkf6EixtnE2ER6_k02C4DM45RlLK_69ly0b4BqecKl7r1MH6s2tsshXIp-zk43QHoAaCQI22dY7wOyzpAkKG5Q9BmYw"  
-      />
+    <button onClick={addPost}>Add Post</button>
+    <div style={{display: "flex", justifyContent: "center"}}>
+      <div>
+      {PostComponents}
+      </div>
     </div>
    </div>
   )
 }
+
 
 function PostComponent({ name, subtitle, time, description, image }) {
   return <div style={{width: 300, backgroundColor: "white", borderRadius: 10, borderColor: "gray", marginTop:20}}>
