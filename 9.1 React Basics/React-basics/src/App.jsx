@@ -1,8 +1,10 @@
 import { useState } from "react"
+import { useEffect } from "react"
 
 function App() {
 
   const [posts, setPosts] = useState([]);
+  const [count, setCount] = useState(1);
 
   const PostComponents = posts.map(post => <PostComponent 
     name={post.name}
@@ -23,9 +25,19 @@ function App() {
     }])
   }
 
+  function increaseCount() {
+    setCount(currentValue => currentValue + 1);
+  }
+
+  useEffect(function() {
+    setInterval(increaseCount, 1000);
+  }, [])
+
+
   return (
    <div style={{ backgroundColor: "#dfe6e9", height: "100vh"}}>
     <button onClick={addPost}>Add Post</button>
+    <div>{count}</div>
     <div style={{display: "flex", justifyContent: "center"}}>
       <div>
       {PostComponents}
@@ -34,6 +46,8 @@ function App() {
    </div>
   )
 }
+
+
 
 
 function PostComponent({ name, subtitle, time, description, image }) {
