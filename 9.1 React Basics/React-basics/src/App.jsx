@@ -4,7 +4,11 @@ import { useEffect } from "react"
 function App() {
 
   const [posts, setPosts] = useState([]);
-  const [count, setCount] = useState(1);
+  // const [count, setCount] = useState(1);
+  const [currentTab, setCurrentTab] = useState(0);
+  const [tabData, setTabData] = useState({})
+  const [loading, setLoading] = useState(true)
+
 
   const PostComponents = posts.map(post => <PostComponent 
     name={post.name}
@@ -25,23 +29,39 @@ function App() {
     }])
   }
 
-  function increaseCount() {
-    setCount(currentValue => currentValue + 1);
-  }
+  // function increaseCount() {
+  //   setCount(currentValue => currentValue + 1);
+  // }
+
+  // useEffect(function() {
+  //   setInterval(increaseCount, 1000);
+  // }, [])
 
   useEffect(function() {
-    setInterval(increaseCount, 1000);
-  }, [])
-
+    setLoading(true);
+    console.log("loading")
+    fetch("https://jsonplaceholder.typicode.com/posts/" + currentTab)
+      .then(async res => {
+        const json = await res.json()
+        setTabData(json);
+        setLoading(false)
+      });
+  }, [currentTab])
 
   return (
    <div style={{ backgroundColor: "#dfe6e9", height: "100vh"}}>
-    <button onClick={addPost}>Add Post</button>
-    <div>{count}</div>
-    <div style={{display: "flex", justifyContent: "center"}}>
+      <button onClick={() => setCurrentTab(1)} style={{color: currentTab == 1 ? "red" : "black"}}>Feed</button>
+      <button onClick={() => setCurrentTab(2)} style={{color: currentTab == 2 ? "red" : "black"}}>Notification</button>
+      <button onClick={() => setCurrentTab(3)} style={{color: currentTab == 3 ? "red" : "black"}}>Messages</button>
+      <button onClick={() => setCurrentTab(4)} style={{color: currentTab == 4 ? "red" : "black"}}>Jobs</button>
+      <button onClick={addPost} style={{color: currentTab == "addposts" ? "red" : "black"}}>Add Post</button>
+      {/* <div>{count}</div> */}
+      <div style={{display: "flex", justifyContent: "center"}}>
       <div>
+      {loading ? "Loading..." : tabData.title}
       {PostComponents}
       </div>
+
     </div>
    </div>
   )
