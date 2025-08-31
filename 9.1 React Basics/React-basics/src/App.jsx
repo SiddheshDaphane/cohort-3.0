@@ -61,7 +61,7 @@ function App() {
       {loading ? "Loading..." : tabData.title}
       {PostComponents}
       </div>
-      <div>
+      <>
         <Card>
           <h2>Card Title</h2>
           <p>This is some content inside the card</p>
@@ -70,7 +70,7 @@ function App() {
           <h2>Card Title</h2>
           <p>This card has different content</p>
         </Card>
-      </div>
+      </>
     </div>
    </div>
   )
