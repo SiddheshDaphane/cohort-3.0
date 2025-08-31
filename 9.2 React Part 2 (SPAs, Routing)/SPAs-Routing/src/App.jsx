@@ -1,35 +1,62 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import { BrowserRouter, Routes, Route, Link, useNavigate, Outlet } from "react-router-dom"
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  return <div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element= {<Layout />}>
+          <Route path='/neet/online-coaching-class-11' element={<Class11Program />}></Route>
+          <Route path='/neet/online-coaching-class-12' element={<Class12Program />}></Route>
+          <Route path='/' element={<Landing />}></Route>
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  </div>  
+}
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+function Landing(){ 
+  return <div>
+    Welcome to Allen
+  </div>
+}
+
+function Class11Program() {
+  return <div>
+    NEET programs for class 11th
+  </div>
+}
+
+function Class12Program() {
+
+  const navigate = useNavigate();
+  function reidrectUser(){
+
+    navigate("/")
+  }
+  return <div>
+    NEET programs for class 12th
+    <button onClick={reidrectUser}>Go back to landing page</button>
+  </div>
+}
+
+function Header() {
+  return <div>
+    <Link to="/">Allen |</Link>
+    <Link to="/neet/online-coaching-class-11"> Class 11 |</Link>
+    <Link to="/neet/online-coaching-class-12"> Class 12</Link>
+  </div>
+}
+
+function Layout() {
+  return <div style={{ background: "green" }}>
+    <Header />
+    <div style={{ background: "red" }}>
+      <Outlet />
+    </div>
+    footer
+  </div>
 }
 
 export default App
