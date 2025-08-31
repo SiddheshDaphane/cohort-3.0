@@ -1,9 +1,20 @@
 import './App.css'
 import { BrowserRouter, Routes, Route, Link, useNavigate, Outlet } from "react-router-dom"
+import { useRef, useState } from 'react'
 
 
 function App() {
+  const inputRef = useRef();
+
+  function focusOnInput() {
+    inputRef.current.focus();
+  }
+
   return <div>
+        Singup
+      <input ref={inputRef} type ={"text"} placeholder='First Name'></input>
+      <input type ={"text"} placeholder='Last Name'></input>
+      <button onClick={focusOnInput}>Submit</button>
     <BrowserRouter>
       <Routes>
         <Route path='/' element= {<Layout />}>
