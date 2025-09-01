@@ -1,33 +1,46 @@
-import { useState } from 'react'
+import { useContext } from 'react';
+import { useState, createContext, useCallback } from 'react'
 import './App.css'
 
+const BulbContext = createContext();
+
 function App() {
+  const [bulbOn, setBulbOn] = useState(true);
+
   return (
     <div>
-      <LightBuld />
+      <BulbContext.Provider value={{
+        bulb: bulbOn,
+        setBulb: setBulbOn
+      }}>
+        <LightBuld />
+      </BulbContext.Provider>
     </div>
   )
 }
 
-function LightBuld() { {/* created a state variable in parent componenet and then I am passing this to children components.  */}
-  const [bulbOn, setBulbOn] = useState(true);
+function LightBuld() { 
 
   return <div>
-    <BulbState bulbOn = {bulbOn}/> {/* passing "bulbOn" as a prop in childern component. Look at the syntax */}
-    <ToggleBulbState bulbOn={bulbOn} setBulbOn= {setBulbOn}/>
+    <BulbState /> 
+    <ToggleBulbState />
   </div>
 }
 
-function BulbState({bulbOn}) { {/* because "bulbOn" is props, I cannot pass it like BulbState(bulbOn). If I pass like this, it means "bulbOn" is function and not a prop. */}
+function BulbState() { 
+  const { bulb } = useContext(BulbContext)
+
   return <div>
-    {bulbOn ? "Bulb On" : "Bulb off"}
+    {bulb ? "Bulb On" : "Bulb off"}
   </div>
 }
 
-function ToggleBulbState({bulbOn, setBulbOn}) {
+function ToggleBulbState() {
+  const { bulb, setBulb } = useContext(BulbContext)
 
   function toggle() {
-    return setBulbOn(!bulbOn)
+    // setBulbOn(currentState => !currentState);
+    return setBulb(!bulb)
   }
 
   return <div>
